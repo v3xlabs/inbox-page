@@ -9,3 +9,7 @@
 .link {
     @apply text-neutral-800 hover:text-neutral-600 underline;
 }
+
+.h3 {
+    @apply text-2xl font-bold;
+}
