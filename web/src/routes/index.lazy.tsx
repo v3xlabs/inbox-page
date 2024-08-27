@@ -16,6 +16,16 @@ const component = () => {
                     />
                     <Button>Subscribe</Button>
                 </div>
+                <div>
+                    Being developed by{' '}
+                    <a
+                        href="https://v3x.company"
+                        className="link"
+                        target="_blank"
+                    >
+                        V3X Labs
+                    </a>
+                </div>
             </div>
         </div>
     );

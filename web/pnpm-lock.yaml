@@ -20,6 +20,9 @@ importers:
       '@tanstack/react-router':
         specifier: ^1.49.2
         version: 1.51.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/web':
+        specifier: ^0.0.157
+        version: 0.0.157
       '@vitejs/plugin-react':
         specifier: ^4.3.1
         version: 4.3.1(vite@5.4.2)
@@ -773,6 +776,9 @@ packages:
 
   '@types/url-search-params@1.1.2':
     resolution: {integrity: sha512-qWxMRBmB4RmK7RqBw18mKcjzoN2Twcx7u+r8iQFfQR1k8Z2gXAC9XMIl0clstn+0CEnzQNznsRgyYV9Xek6AMA==}
+
+  '@types/web@0.0.157':
+    resolution: {integrity: sha512-erqzRlWBxaV7qI0g5rIkHRRxQ3kKmqqhokqgnSy3UEQYIl+5qNCU7DwdPaOke3ZHRXmbrjpGgSc4bjM4ItSDnw==}
 
   '@typescript-eslint/parser@5.62.0':
     resolution: {integrity: sha512-VlJEV0fOQ7BExOsHYAGrgbEiZoi8D+Bl2+f6V2RrXerRSylnp+ZBHmPvaIa8cz0Ajx7WO7Z5RqfgYg7ED1nRhA==}
@@ -2939,6 +2945,8 @@ snapshots:
   '@types/ua-parser-js@0.7.39': {}
 
   '@types/url-search-params@1.1.2': {}
+
+  '@types/web@0.0.157': {}
 
   '@typescript-eslint/parser@5.62.0(eslint@8.57.0)(typescript@5.5.4)':
     dependencies:

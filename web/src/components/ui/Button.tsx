@@ -1,11 +1,10 @@
+/* eslint-disable no-undef */
 /* eslint-disable sonarjs/no-duplicate-string */
 import { Slot } from '@radix-ui/react-slot';
 import { cva, VariantProps } from 'class-variance-authority';
 import { ButtonHTMLAttributes, forwardRef } from 'react';
 
 import { cn } from '../../utils/cva';
-
-const gradientBg = 'bg-[linear-gradient(to_right,var(--bg-from),var(--bg-to))]'; // Gradient background
 
 export const buttonVariants = cva(
     [
@@ -24,38 +23,29 @@ export const buttonVariants = cva(
             },
             variant: {
                 default: [
-                    gradientBg,
-                    'text-[#FFF3E8] [--bg-from:#e95666] [--bg-to:#e95666]', // Default
+                    'text-text-inverse bg-primary', // Default
                     'not-disabled:hover:[--bg-from:#f43355] not-disabled:hover:[--bg-to:#ff6d0a]', // Hover
                     'focus-visible:border-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFF3E8]', // Focus
                 ],
                 secondary: [
-                    gradientBg,
-                    'text-[#E95666] [--bg-from:#ffdbca] [--bg-to:#ffdbca]', // Default
+                    'text-text bg-secondary', // Default
                     'not-disabled:hover:text-[#ED3D50] not-disabled:hover:[--bg-from:#ffd067] not-disabled:hover:[--bg-to:#ff9b7c]', // Hover
                     'focus-visible:border-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E95666]', // Focus
                 ],
-                outline: [
-                    gradientBg,
-                    'text-[#E95666] [--bg-from:#ffdbca] [--bg-to:#ffdbca]', // Default
-                    'not-disabled:hover:text-[#ED3D50] not-disabled:hover:[--bg-from:#ffd067] not-disabled:hover:[--bg-to:#ff9b7c]', // Hover
-                    'border-2 border-[#E95666]', // Border
-                    'focus-visible:border-dashed focus-visible:outline-none', // Focus
-                ],
                 link: [
-                    'bg-none text-[#833216] underline', // Default
+                    'bg-none text-text underline', // Default
                     'hover:text-[#E95666]', // Hover
                     'focus-visible:text-[#E95666] focus-visible:outline-none', // Focus
                 ],
                 ghost: [
-                    'text-[#833216]', // Default
+                    'text-text', // Default
                     'not-disabled:hover:bg-[#FFDBCA]/80', // Hover
-                    'disabled:text-[#833216]/80', // Disabled
+                    'disabled:text-text/80', // Disabled
                     'focus-visible:border-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E95666]', // Focus
                 ],
                 ghostOutline: [
-                    'bg-[#FFDBCA]/80 text-[#833216]', // Default
-                    'border-2 border-[#833216]', // Hover
+                    'bg-[#FFDBCA]/80 text-text', // Default
+                    'border-2 border-text', // Hover
                     'focus-visible:border-dashed focus-visible:outline-none', // Focus
                 ],
             },
@@ -69,7 +59,7 @@ export const buttonVariants = cva(
 
 export interface ButtonProperties
     extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+        VariantProps<typeof buttonVariants> {
     asChild?: boolean;
 }
 
