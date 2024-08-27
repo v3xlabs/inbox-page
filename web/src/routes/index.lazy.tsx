@@ -6,7 +6,7 @@ const component = () => {
     return (
         <div className="p-2 w-full h-full flex items-center justify-center">
             <div className="border p-4 rounded-lg space-y-2 w-full max-w-md">
-                <h3 className="h3">Your Inbox Page</h3>
+                <h1 className="h2">Your Inbox Page</h1>
                 <p>Welcome to the last inbox you'll ever need</p>
                 <div className="flex space-x-2 items-center">
                     <input
