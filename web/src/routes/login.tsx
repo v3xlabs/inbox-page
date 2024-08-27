@@ -1,45 +1,47 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { createFileRoute } from '@tanstack/react-router';
-import { useEffect } from 'react';
 
 import { Button } from '../components/ui/Button';
+import { useInboxAccount } from '../hooks/useInboxAccount';
 
 const component = () => {
-    useEffect(() => {
-        (async () => {
-            if (
-                // eslint-disable-next-line no-undef
-                window.PublicKeyCredential &&
-                // eslint-disable-next-line no-undef
-                PublicKeyCredential.isConditionalMediationAvailable
-            ) {
-                // Check if conditional mediation is available.
-                const isCMA =
-                    // eslint-disable-next-line no-undef
-                    await PublicKeyCredential.isConditionalMediationAvailable();
+    const { account_id, instance_url } = useInboxAccount();
 
-                if (isCMA) {
-                    // Call WebAuthn authentication
-                    // eslint-disable-next-line no-undef
-                    const credential = await navigator?.credentials.get({
-                        publicKey: {
-                            challenge: new Uint8Array([
-                                117, 61, 252, 231, 191, 242,
-                            ]),
-                            // eslint-disable-next-line no-undef
-                            rpId: location.hostname,
-                            allowCredentials: [],
-                        },
-                        // signal: abortController.signal,
-                        // Specify 'conditional' to activate conditional UI
-                        mediation: 'conditional',
-                    });
+    // useEffect(() => {
+    //     (async () => {
+    //         if (
+    //             // eslint-disable-next-line no-undef
+    //             window.PublicKeyCredential &&
+    //             // eslint-disable-next-line no-undef
+    //             PublicKeyCredential.isConditionalMediationAvailable
+    //         ) {
+    //             // Check if conditional mediation is available.
+    //             const isCMA =
+    //                 // eslint-disable-next-line no-undef
+    //                 await PublicKeyCredential.isConditionalMediationAvailable();
 
-                    console.log({ credential });
-                }
-            }
-        })();
-    }, []);
+    //             if (isCMA) {
+    //                 // Call WebAuthn authentication
+    //                 // eslint-disable-next-line no-undef
+    //                 const credential = await navigator?.credentials.get({
+    //                     publicKey: {
+    //                         challenge: new Uint8Array([
+    //                             117, 61, 252, 231, 191, 242,
+    //                         ]),
+    //                         // eslint-disable-next-line no-undef
+    //                         rpId: location.hostname,
+    //                         allowCredentials: [],
+    //                     },
+    //                     // signal: abortController.signal,
+    //                     // Specify 'conditional' to activate conditional UI
+    //                     mediation: 'conditional',
+    //                 });
+
+    //                 console.log({ credential });
+    //             }
+    //         }
+    //     })();
+    // }, []);
 
     return (
         <div className="p-2 w-full h-full flex items-center justify-center">
@@ -99,6 +101,7 @@ const component = () => {
                 <input
                     type="text"
                     name="username"
+                    className="hidden"
                     autoComplete="username webauthn"
                 />
                 <div>
