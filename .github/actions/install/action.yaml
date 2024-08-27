@@ -1,0 +1,24 @@
+name: Install Tools & Dependencies
+description: Installs pnpm, Node.js & package dependencies
+
+runs:
+  using: composite
+  steps:
+    - name: Setup PNPM
+      uses: pnpm/action-setup@v4
+      with:
+        run_install: false
+        standalone: true
+        package_json_file: web/package.json
+        version: 8
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 21
+        cache: pnpm
+        cache-dependency-path: "web"
+
+    - name: Install dependencies
+      run: cd web && pnpm install
+      shell: bash

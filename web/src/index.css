@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn {
+    @apply bg-white text-neutral-800 border border-neutral-200 px-2.5 py-0.5 h-fit hover:bg-neutral-50 rounded-md focus:outline focus:outline-2 outline-offset-2 outline-blue-500;
+}
+
+.link {
+    @apply text-neutral-800 hover:text-neutral-600 underline;
+}

@@ -1,0 +1,51 @@
+{
+    "name": "inbox-page",
+    "version": "1.0.0",
+    "description": "",
+    "type": "module",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "dev": "vite",
+      "build": "pnpm prebuild && vite build",
+      "prebuild": "tsx ./src/preprocess.ts"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "GPL-3.0",
+    "dependencies": {
+      "@eslint/eslintrc": "^3.1.0",
+      "@eslint/js": "^9.8.0",
+      "@tanstack/react-router": "^1.49.2",
+      "@vitejs/plugin-react": "^4.3.1",
+      "autoprefixer": "^10.4.19",
+      "clsx": "^2.1.1",
+      "eslint-plugin-unused-imports": "^4.0.1",
+      "globals": "^15.8.0",
+      "leaflet": "^1.9.4",
+      "postcss": "^8.4.38",
+      "react": "^18.3.1",
+      "react-dom": "^18.3.1",
+      "react-icons": "^5.3.0",
+      "react-leaflet": "^4.2.1",
+      "swr": "^2.2.5",
+      "tailwindcss": "^3.4.3",
+      "tsc": "^2.0.4",
+      "tsx": "^4.17.0",
+      "ua-parser-js": "^1.0.38",
+      "vite": "^5.2.10",
+      "zustand": "^4.5.4"
+    },
+    "devDependencies": {
+      "@tanstack/router-devtools": "^1.45.14",
+      "@tanstack/router-plugin": "^1.45.13",
+      "@types/leaflet": "^1.9.12",
+      "@types/react": "^18.3.3",
+      "@types/react-dom": "^18.3.0",
+      "@types/ua-parser-js": "^0.7.39",
+      "@types/url-search-params": "^1.1.2",
+      "@typescript-eslint/parser": "^7.17.0",
+      "eslint": "^8.57.0",
+      "eslint-plugin-v3xlabs": "^1.6.5",
+      "typescript": "^5.5.4"
+    }
+  }
