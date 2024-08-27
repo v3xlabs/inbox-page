@@ -1,5 +1,7 @@
 import { createLazyFileRoute } from '@tanstack/react-router';
 
+import { Button } from '../components/ui/Button';
+
 const component = () => {
     return (
         <div className="p-2 w-full h-full flex items-center justify-center">
@@ -12,7 +14,7 @@ const component = () => {
                         placeholder="Enter your email"
                         className="flex h-10 w-full rounded bg-[white] border px-3 py-2 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-[black]/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[lightblue] disabled:opacity-50 focus-visible:border-none"
                     />
-                    <button className="btn">Subscribe</button>
+                    <Button className="btn">Subscribe</Button>
                 </div>
             </div>
         </div>
