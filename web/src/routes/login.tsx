@@ -12,13 +12,15 @@ const component = () => {
                 <div className="flex flex-col gap-2">
                     <Button
                         onClick={async () => {
+                            // eslint-disable-next-line no-undef
                             await navigator?.credentials.create({
                                 publicKey: {
                                     challenge: new Uint8Array([
                                         117, 61, 252, 231, 191, 241,
                                     ]),
                                     rp: {
-                                        id: 'localhost',
+                                        // eslint-disable-next-line no-undef
+                                        id: location.host,
                                         name: 'ACME Corporation',
                                     },
                                     user: {
@@ -39,12 +41,14 @@ const component = () => {
                     </Button>
                     <Button
                         onClick={() => {
+                            // eslint-disable-next-line no-undef
                             navigator.credentials.get({
                                 publicKey: {
                                     challenge: new Uint8Array([
                                         117, 61, 252, 231, 191, 242,
                                     ]),
-                                    rpId: 'localhost',
+                                    // eslint-disable-next-line no-undef
+                                    rpId: location.host,
                                     allowCredentials: [],
                                 },
                             });
