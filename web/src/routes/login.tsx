@@ -1,9 +1,46 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 import { createFileRoute } from '@tanstack/react-router';
+import { useEffect } from 'react';
 
 import { Button } from '../components/ui/Button';
 
 const component = () => {
+    useEffect(() => {
+        (async () => {
+            if (
+                // eslint-disable-next-line no-undef
+                window.PublicKeyCredential &&
+                // eslint-disable-next-line no-undef
+                PublicKeyCredential.isConditionalMediationAvailable
+            ) {
+                // Check if conditional mediation is available.
+                const isCMA =
+                    // eslint-disable-next-line no-undef
+                    await PublicKeyCredential.isConditionalMediationAvailable();
+
+                if (isCMA) {
+                    // Call WebAuthn authentication
+                    // eslint-disable-next-line no-undef
+                    const credential = await navigator?.credentials.get({
+                        publicKey: {
+                            challenge: new Uint8Array([
+                                117, 61, 252, 231, 191, 242,
+                            ]),
+                            // eslint-disable-next-line no-undef
+                            rpId: location.hostname,
+                            allowCredentials: [],
+                        },
+                        // signal: abortController.signal,
+                        // Specify 'conditional' to activate conditional UI
+                        mediation: 'conditional',
+                    });
+
+                    console.log({ credential });
+                }
+            }
+        })();
+    }, []);
+
     return (
         <div className="p-2 w-full h-full flex items-center justify-center">
             <div className="border p-4 rounded-lg space-y-2 w-full max-w-md">
@@ -20,7 +57,7 @@ const component = () => {
                                     ]),
                                     rp: {
                                         // eslint-disable-next-line no-undef
-                                        id: location.host,
+                                        id: location.hostname,
                                         name: 'ACME Corporation',
                                     },
                                     user: {
@@ -40,17 +77,18 @@ const component = () => {
                         Create Account
                     </Button>
                     <Button
-                        onClick={() => {
+                        onClick={async () => {
                             // eslint-disable-next-line no-undef
-                            navigator.credentials.get({
+                            await navigator?.credentials?.get({
                                 publicKey: {
                                     challenge: new Uint8Array([
                                         117, 61, 252, 231, 191, 242,
                                     ]),
                                     // eslint-disable-next-line no-undef
-                                    rpId: location.host,
+                                    rpId: location.hostname,
                                     allowCredentials: [],
                                 },
+                                mediation: 'required',
                             });
                         }}
                         variant="secondary"
