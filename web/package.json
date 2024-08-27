@@ -7,7 +7,7 @@
       "test": "echo \"Error: no test specified\" && exit 1",
       "dev": "vite",
       "build": "pnpm prebuild && vite build",
-      "prebuild": "tsx ./src/preprocess.ts"
+    //   "prebuild": "tsx ./src/preprocess.ts"
     },
     "keywords": [],
     "author": "",
