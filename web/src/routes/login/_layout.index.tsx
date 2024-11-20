@@ -1,11 +1,13 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 
-import { Button } from '../components/ui/Button';
-import { useInboxAccount } from '../hooks/useInboxAccount';
+import { Button } from '../../components/ui/Button';
+import { useInboxAccount } from '../../hooks/useInboxAccount';
+import { useFetchAuthChallenge } from '../../utils/useFetchAuthChallenge';
 
 const component = () => {
     const { account_id, instance_url } = useInboxAccount();
+    const { data: challenge } = useFetchAuthChallenge();
 
     // useEffect(() => {
     //     (async () => {
@@ -44,19 +46,19 @@ const component = () => {
     // }, []);
 
     return (
-        <div className="p-2 w-full h-full flex items-center justify-center">
-            <div className="border p-4 rounded-lg space-y-2 w-full max-w-md">
-                <h1 className="h2">Your Inbox Page</h1>
-                <p>Welcome to the last inbox you'll ever need</p>
-                <div className="flex flex-col gap-2">
-                    <Button
-                        onClick={async () => {
+        <>
+            <h1 className="h2">Your Inbox Page</h1>
+            <p>Welcome to the last inbox you'll ever need</p>
+            <div className="flex flex-col gap-2">
+                <Button
+                    onClick={async () => {
+                        try {
                             // eslint-disable-next-line no-undef
-                            await navigator?.credentials.create({
+                            const x = await navigator?.credentials.create({
                                 publicKey: {
-                                    challenge: new Uint8Array([
-                                        117, 61, 252, 231, 191, 241,
-                                    ]),
+                                    challenge: new Uint8Array(
+                                        challenge!.challenge
+                                    ),
                                     rp: {
                                         // eslint-disable-next-line no-undef
                                         id: location.hostname,
@@ -66,59 +68,67 @@ const component = () => {
                                         id: new Uint8Array([
                                             79, 252, 83, 72, 214, 7, 89, 26,
                                         ]),
-                                        name: 'jamiedoe',
-                                        displayName: 'Jamie Doe',
+                                        name: 'lucemans',
+                                        displayName: 'Luc van Kampen',
                                     },
                                     pubKeyCredParams: [
                                         { type: 'public-key', alg: -7 },
                                     ],
                                 },
                             });
-                        }}
-                    >
-                        Create Account
-                    </Button>
-                    <Button
-                        onClick={async () => {
+
+                            console.log(x);
+                        } catch (error) {
+                            console.error(error);
+                            // @ts-ignore
                             // eslint-disable-next-line no-undef
-                            await navigator?.credentials?.get({
+                            alert(error);
+                        }
+                    }}
+                >
+                    Create Account
+                </Button>
+                <Button asChild>
+                    <Link to="/login/create">Create Account</Link>
+                </Button>
+                <Button
+                    onClick={() => {
+                        (async () => {
+                            // eslint-disable-next-line no-undef
+                            const cred = await navigator?.credentials?.get({
                                 publicKey: {
-                                    challenge: new Uint8Array([
-                                        117, 61, 252, 231, 191, 242,
-                                    ]),
+                                    challenge: challenge!.challenge,
                                     // eslint-disable-next-line no-undef
                                     rpId: location.hostname,
                                     allowCredentials: [],
                                 },
                                 mediation: 'required',
                             });
-                        }}
-                        variant="secondary"
-                    >
-                        Go to my Inbox
-                    </Button>
-                </div>
-                <input
-                    type="text"
-                    name="username"
-                    className="hidden"
-                    autoComplete="username webauthn"
-                />
-                <div>
-                    Being developed by{' '}
-                    <a
-                        href="https://v3x.company"
-                        className="link"
-                        target="_blank"
-                    >
-                        V3X Labs
-                    </a>
-                </div>
+
+                            console.log(cred);
+                        })();
+                    }}
+                    variant="secondary"
+                >
+                    Go to my Inbox
+                </Button>
             </div>
-        </div>
+            <input
+                type="text"
+                name="username"
+                className="hidden"
+                autoComplete="username webauthn"
+            />
+            <div>
+                Being developed by{' '}
+                <a href="https://v3x.company" className="link" target="_blank">
+                    V3X Labs
+                </a>
+            </div>
+        </>
     );
 };
 
-export const Route = createFileRoute('/login')({
+export const Route = createFileRoute('/login/_layout/')({
     component,
 });

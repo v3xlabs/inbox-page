@@ -12,7 +12,7 @@ interface InboxAccount {
 export const useInboxAccount = create<InboxAccount>()(
     persist(
         (set, _get) => ({
-            account_id: undefined,
+            account_id: '',
             instance_url: undefined,
             setInstanceAndAccount: (account_id: string, instance_url: string) =>
                 set({ account_id, instance_url }),

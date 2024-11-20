@@ -13,25 +13,28 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as LoginImport } from './routes/login'
 import { Route as MailIndexImport } from './routes/$mail/index'
+import { Route as LoginLayoutImport } from './routes/login/_layout'
+import { Route as LoginLayoutIndexImport } from './routes/login/_layout.index'
 
 // Create Virtual Routes
 
+const LoginImport = createFileRoute('/login')()
 const DebugLazyImport = createFileRoute('/debug')()
 const IndexLazyImport = createFileRoute('/')()
+const LoginLayoutCreateLazyImport = createFileRoute('/login/_layout/create')()
 
 // Create/Update Routes
-
-const DebugLazyRoute = DebugLazyImport.update({
-  path: '/debug',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/debug.lazy').then((d) => d.Route))
 
 const LoginRoute = LoginImport.update({
   path: '/login',
   getParentRoute: () => rootRoute,
 } as any)
+
+const DebugLazyRoute = DebugLazyImport.update({
+  path: '/debug',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/debug.lazy').then((d) => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
@@ -42,6 +45,23 @@ const MailIndexRoute = MailIndexImport.update({
   path: '/$mail/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const LoginLayoutRoute = LoginLayoutImport.update({
+  id: '/_layout',
+  getParentRoute: () => LoginRoute,
+} as any)
+
+const LoginLayoutIndexRoute = LoginLayoutIndexImport.update({
+  path: '/',
+  getParentRoute: () => LoginLayoutRoute,
+} as any)
+
+const LoginLayoutCreateLazyRoute = LoginLayoutCreateLazyImport.update({
+  path: '/create',
+  getParentRoute: () => LoginLayoutRoute,
+} as any).lazy(() =>
+  import('./routes/login/_layout.create.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -54,6 +74,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/debug': {
+      id: '/debug'
+      path: '/debug'
+      fullPath: '/debug'
+      preLoaderRoute: typeof DebugLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -61,12 +88,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/debug': {
-      id: '/debug'
-      path: '/debug'
-      fullPath: '/debug'
-      preLoaderRoute: typeof DebugLazyImport
-      parentRoute: typeof rootRoute
+    '/login/_layout': {
+      id: '/login/_layout'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginLayoutImport
+      parentRoute: typeof LoginRoute
     }
     '/$mail/': {
       id: '/$mail/'
@@ -75,6 +102,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MailIndexImport
       parentRoute: typeof rootRoute
     }
+    '/login/_layout/create': {
+      id: '/login/_layout/create'
+      path: '/create'
+      fullPath: '/login/create'
+      preLoaderRoute: typeof LoginLayoutCreateLazyImport
+      parentRoute: typeof LoginLayoutImport
+    }
+    '/login/_layout/': {
+      id: '/login/_layout/'
+      path: '/'
+      fullPath: '/login/'
+      preLoaderRoute: typeof LoginLayoutIndexImport
+      parentRoute: typeof LoginLayoutImport
+    }
   }
 }
 
@@ -82,8 +123,13 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
-  LoginRoute,
   DebugLazyRoute,
+  LoginRoute: LoginRoute.addChildren({
+    LoginLayoutRoute: LoginLayoutRoute.addChildren({
+      LoginLayoutCreateLazyRoute,
+      LoginLayoutIndexRoute,
+    }),
+  }),
   MailIndexRoute,
 })
 
@@ -96,22 +142,41 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/login",
         "/debug",
+        "/login",
         "/$mail/"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
     },
-    "/login": {
-      "filePath": "login.tsx"
-    },
     "/debug": {
       "filePath": "debug.lazy.tsx"
     },
+    "/login": {
+      "filePath": "login",
+      "children": [
+        "/login/_layout"
+      ]
+    },
+    "/login/_layout": {
+      "filePath": "login/_layout.tsx",
+      "parent": "/login",
+      "children": [
+        "/login/_layout/create",
+        "/login/_layout/"
+      ]
+    },
     "/$mail/": {
       "filePath": "$mail/index.tsx"
+    },
+    "/login/_layout/create": {
+      "filePath": "login/_layout.create.lazy.tsx",
+      "parent": "/login/_layout"
+    },
+    "/login/_layout/": {
+      "filePath": "login/_layout.index.tsx",
+      "parent": "/login/_layout"
     }
   }
 }

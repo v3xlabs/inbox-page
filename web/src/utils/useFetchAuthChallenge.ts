@@ -5,9 +5,20 @@ export const useFetchAuthChallenge = () =>
         queryKey: ['fetch-auth-challenge'],
         queryFn: async () => {
             const response = await fetch(
-                'https://localhost:8000/auth/challenge'
+                'https://v3x-fighter.tail52a8.ts.net:5173/api/auth/challenge'
             );
 
-            return response.json();
+            const {
+                challenge,
+                signature,
+            }: {
+                challenge: number[];
+                signature: string;
+            } = await response.json();
+
+            return {
+                challenge: new Uint8Array(challenge),
+                signature,
+            };
         },
     });
