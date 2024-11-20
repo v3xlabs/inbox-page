@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 base64 = "0.22.1"
 dotenvy = "0.15.7"
+openid = "0.15.0"
 poem = "3.0.4"
 rand = "0.8.5"
 serde = "1.0.209"

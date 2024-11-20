@@ -4,11 +4,11 @@ DATABASE_URL=postgres://postgres:postgres@localhost:5432/inbox_dev
 .PHONY: dev-up
 dev-up:
 	@mkdir -p scripts
-	docker compose -f docker-compose.dev.yml up -d
+	docker compose -f compose.dev.yml up -d
 	@echo "Waiting for database initialization..."
 	@sleep 5
 	@echo "Checking service status..."
-	@docker compose -f docker-compose.dev.yml ps
+	@docker compose -f compose.dev.yml ps
 	@echo "Development environment is ready!"
 	@echo "Database URL: ${DATABASE_URL}"
 
@@ -17,16 +17,22 @@ dev-reset: dev-down-clean dev-up
 
 .PHONY: dev-down
 dev-down:
-	docker compose -f docker-compose.dev.yml down
+	docker compose -f compose.dev.yml down
 
 .PHONY: dev-down-clean
 dev-down-clean:
-	docker compose -f docker-compose.dev.yml down -v
+	docker compose -f compose.dev.yml down -v
 
 .PHONY: dev-logs
 dev-logs:
-	docker compose -f docker-compose.dev.yml logs -f
+	docker compose -f compose.dev.yml logs -f
 
 .PHONY: dev-ps
 dev-ps:
-	docker compose -f docker-compose.dev.yml ps
+	docker compose -f compose.dev.yml ps
+init-keycloak:
+	@chmod +x ./scripts/init-keycloak.sh
+	@./scripts/init-keycloak.sh
+
+.PHONY: init-keycloak
+

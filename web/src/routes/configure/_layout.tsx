@@ -2,7 +2,13 @@ import { createFileRoute, Outlet } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/configure/_layout')({
     component: () => (
-        <div className="p-2 w-full h-full pt-4 md:pt-32">
+        <div
+            className="p-2 w-full h-full pt-4 md:pt-32"
+            style={{
+                backgroundImage:
+                    'linear-gradient(to right top, #af0917, #bc161b, #c9201f, #d72924, #e43228)',
+            }}
+        >
             <div className="max-w-lg mx-auto space-y-4">
                 <h1 className="text-2xl font-bold text-text-secondary">
                     Configuration

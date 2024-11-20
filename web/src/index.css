@@ -17,3 +17,7 @@
 .h3 {
     @apply text-xl font-bold;
 }
+
+.hr {
+    @apply border-t border-neutral-200 my-4;
+}

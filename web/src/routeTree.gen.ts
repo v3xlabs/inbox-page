@@ -18,7 +18,9 @@ import { Route as LoginLayoutImport } from './routes/login/_layout'
 import { Route as ConfigureLayoutImport } from './routes/configure/_layout'
 import { Route as LoginLayoutIndexImport } from './routes/login/_layout.index'
 import { Route as ConfigureLayoutIndexImport } from './routes/configure/_layout.index'
+import { Route as LoginLayoutCallbackImport } from './routes/login/_layout.callback'
 import { Route as ConfigureLayoutInstanceIndexImport } from './routes/configure/_layout.instance/index'
+import { Route as ConfigureLayoutInstanceHealthcheckImport } from './routes/configure/_layout.instance/healthcheck'
 
 // Create Virtual Routes
 
@@ -82,9 +84,20 @@ const LoginLayoutCreateLazyRoute = LoginLayoutCreateLazyImport.update({
   import('./routes/login/_layout.create.lazy').then((d) => d.Route),
 )
 
+const LoginLayoutCallbackRoute = LoginLayoutCallbackImport.update({
+  path: '/callback',
+  getParentRoute: () => LoginLayoutRoute,
+} as any)
+
 const ConfigureLayoutInstanceIndexRoute =
   ConfigureLayoutInstanceIndexImport.update({
     path: '/instance/',
+    getParentRoute: () => ConfigureLayoutRoute,
+  } as any)
+
+const ConfigureLayoutInstanceHealthcheckRoute =
+  ConfigureLayoutInstanceHealthcheckImport.update({
+    path: '/instance/healthcheck',
     getParentRoute: () => ConfigureLayoutRoute,
   } as any)
 
@@ -141,6 +154,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MailIndexImport
       parentRoute: typeof rootRoute
     }
+    '/login/_layout/callback': {
+      id: '/login/_layout/callback'
+      path: '/callback'
+      fullPath: '/login/callback'
+      preLoaderRoute: typeof LoginLayoutCallbackImport
+      parentRoute: typeof LoginLayoutImport
+    }
     '/login/_layout/create': {
       id: '/login/_layout/create'
       path: '/create'
@@ -162,6 +182,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginLayoutIndexImport
       parentRoute: typeof LoginLayoutImport
     }
+    '/configure/_layout/instance/healthcheck': {
+      id: '/configure/_layout/instance/healthcheck'
+      path: '/instance/healthcheck'
+      fullPath: '/configure/instance/healthcheck'
+      preLoaderRoute: typeof ConfigureLayoutInstanceHealthcheckImport
+      parentRoute: typeof ConfigureLayoutImport
+    }
     '/configure/_layout/instance/': {
       id: '/configure/_layout/instance/'
       path: '/instance'
@@ -180,11 +207,13 @@ export const routeTree = rootRoute.addChildren({
   ConfigureRoute: ConfigureRoute.addChildren({
     ConfigureLayoutRoute: ConfigureLayoutRoute.addChildren({
       ConfigureLayoutIndexRoute,
+      ConfigureLayoutInstanceHealthcheckRoute,
       ConfigureLayoutInstanceIndexRoute,
     }),
   }),
   LoginRoute: LoginRoute.addChildren({
     LoginLayoutRoute: LoginLayoutRoute.addChildren({
+      LoginLayoutCallbackRoute,
       LoginLayoutCreateLazyRoute,
       LoginLayoutIndexRoute,
     }),
@@ -224,6 +253,7 @@ export const routeTree = rootRoute.addChildren({
       "parent": "/configure",
       "children": [
         "/configure/_layout/",
+        "/configure/_layout/instance/healthcheck",
         "/configure/_layout/instance/"
       ]
     },
@@ -237,12 +267,17 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "login/_layout.tsx",
       "parent": "/login",
       "children": [
+        "/login/_layout/callback",
         "/login/_layout/create",
         "/login/_layout/"
       ]
     },
     "/$mail/": {
       "filePath": "$mail/index.tsx"
+    },
+    "/login/_layout/callback": {
+      "filePath": "login/_layout.callback.tsx",
+      "parent": "/login/_layout"
     },
     "/login/_layout/create": {
       "filePath": "login/_layout.create.lazy.tsx",
@@ -255,6 +290,10 @@ export const routeTree = rootRoute.addChildren({
     "/login/_layout/": {
       "filePath": "login/_layout.index.tsx",
       "parent": "/login/_layout"
+    },
+    "/configure/_layout/instance/healthcheck": {
+      "filePath": "configure/_layout.instance/healthcheck.tsx",
+      "parent": "/configure/_layout"
     },
     "/configure/_layout/instance/": {
       "filePath": "configure/_layout.instance/index.tsx",

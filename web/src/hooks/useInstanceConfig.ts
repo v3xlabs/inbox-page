@@ -5,12 +5,14 @@ import { persist } from 'zustand/middleware';
 
 type InstanceConfig = {
     instance_url: string;
+    setInstanceUrl: (_instance_url: string) => void;
 };
 
 const useInstanceConfigStore = create<InstanceConfig>()(
     persist(
         (set, _get) => ({
             instance_url: '',
+            setInstanceUrl: (instance_url: string) => set({ instance_url }),
         }),
         {
             name: 'instance-config',
@@ -27,10 +29,17 @@ export const useInstanceConfig = ({
 }: UseInstanceConfigProperties = {}) => {
     const router = useRouter();
     const location = useLocation();
-    const instanceConfig = useInstanceConfigStore();
+    const { instance_url, setInstanceUrl } = useInstanceConfigStore();
 
     useEffect(() => {
-        if (shouldRedirect && !instanceConfig.instance_url) {
+        // load from VITE_INSTANCE_URL if available
+        const instanceUrl = (import.meta as any).env.VITE_INSTANCE_URL;
+
+        if (instanceUrl && instanceUrl !== instance_url) {
+            setInstanceUrl(instanceUrl);
+        }
+
+        if (shouldRedirect && !instance_url) {
             const currentPath = location.href;
 
             router.navigate({
@@ -40,7 +49,7 @@ export const useInstanceConfig = ({
                 },
             });
         }
-    }, [shouldRedirect, instanceConfig.instance_url, router]);
+    }, [shouldRedirect, instance_url, router]);
 
-    return instanceConfig;
+    return { instance_url, setInstanceUrl };
 };

@@ -80,6 +80,9 @@ importers:
       ua-parser-js:
         specifier: ^1.0.38
         version: 1.0.38
+      use-elapsed-time:
+        specifier: ^3.0.4
+        version: 3.0.4(react@18.3.1)
       vite:
         specifier: ^5.4.6
         version: 5.4.6
@@ -2316,6 +2319,11 @@ packages:
 
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
+
+  use-elapsed-time@3.0.4:
+    resolution: {integrity: sha512-q9b9j0K1SfsX2B9vzfRYkNyn2kBV5YBh9oJ/+XnIPKFjLbjvnF2PnJ/08HWPfCKKBWGz8d1qAfmXiYxWAseklw==}
+    peerDependencies:
+      react: '>=16.8.0'
 
   use-sync-external-store@1.2.2:
     resolution: {integrity: sha512-PElTlVMwpblvbNqQ82d2n6RjStvdSoNe9FG28kNfz3WiXilJm4DdNkEzRhCZuIDwY8U08WVihhGR5iRqAwfDiw==}
@@ -4738,6 +4746,10 @@ snapshots:
   uri-js@4.4.1:
     dependencies:
       punycode: 2.3.1
+
+  use-elapsed-time@3.0.4(react@18.3.1):
+    dependencies:
+      react: 18.3.1
 
   use-sync-external-store@1.2.2(react@18.3.1):
     dependencies:

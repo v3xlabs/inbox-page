@@ -36,6 +36,7 @@
     "tsc": "^2.0.4",
     "tsx": "^4.17.0",
     "ua-parser-js": "^1.0.38",
+    "use-elapsed-time": "^3.0.4",
     "vite": "^5.4.6",
     "zustand": "^4.5.4"
   },
