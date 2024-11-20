@@ -15,11 +15,14 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as MailIndexImport } from './routes/$mail/index'
 import { Route as LoginLayoutImport } from './routes/login/_layout'
+import { Route as ConfigureLayoutImport } from './routes/configure/_layout'
 import { Route as LoginLayoutIndexImport } from './routes/login/_layout.index'
+import { Route as ConfigureInstanceIndexImport } from './routes/configure/instance/index'
 
 // Create Virtual Routes
 
 const LoginImport = createFileRoute('/login')()
+const ConfigureImport = createFileRoute('/configure')()
 const DebugLazyImport = createFileRoute('/debug')()
 const IndexLazyImport = createFileRoute('/')()
 const LoginLayoutCreateLazyImport = createFileRoute('/login/_layout/create')()
@@ -28,6 +31,11 @@ const LoginLayoutCreateLazyImport = createFileRoute('/login/_layout/create')()
 
 const LoginRoute = LoginImport.update({
   path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ConfigureRoute = ConfigureImport.update({
+  path: '/configure',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -51,9 +59,19 @@ const LoginLayoutRoute = LoginLayoutImport.update({
   getParentRoute: () => LoginRoute,
 } as any)
 
+const ConfigureLayoutRoute = ConfigureLayoutImport.update({
+  id: '/_layout',
+  getParentRoute: () => ConfigureRoute,
+} as any)
+
 const LoginLayoutIndexRoute = LoginLayoutIndexImport.update({
   path: '/',
   getParentRoute: () => LoginLayoutRoute,
+} as any)
+
+const ConfigureInstanceIndexRoute = ConfigureInstanceIndexImport.update({
+  path: '/instance/',
+  getParentRoute: () => ConfigureRoute,
 } as any)
 
 const LoginLayoutCreateLazyRoute = LoginLayoutCreateLazyImport.update({
@@ -80,6 +98,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/debug'
       preLoaderRoute: typeof DebugLazyImport
       parentRoute: typeof rootRoute
+    }
+    '/configure': {
+      id: '/configure'
+      path: '/configure'
+      fullPath: '/configure'
+      preLoaderRoute: typeof ConfigureImport
+      parentRoute: typeof rootRoute
+    }
+    '/configure/_layout': {
+      id: '/configure/_layout'
+      path: '/configure'
+      fullPath: '/configure'
+      preLoaderRoute: typeof ConfigureLayoutImport
+      parentRoute: typeof ConfigureRoute
     }
     '/login': {
       id: '/login'
@@ -109,6 +141,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginLayoutCreateLazyImport
       parentRoute: typeof LoginLayoutImport
     }
+    '/configure/instance/': {
+      id: '/configure/instance/'
+      path: '/instance'
+      fullPath: '/configure/instance'
+      preLoaderRoute: typeof ConfigureInstanceIndexImport
+      parentRoute: typeof ConfigureImport
+    }
     '/login/_layout/': {
       id: '/login/_layout/'
       path: '/'
@@ -124,6 +163,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   DebugLazyRoute,
+  ConfigureRoute: ConfigureRoute.addChildren({ ConfigureInstanceIndexRoute }),
   LoginRoute: LoginRoute.addChildren({
     LoginLayoutRoute: LoginLayoutRoute.addChildren({
       LoginLayoutCreateLazyRoute,
@@ -143,6 +183,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/debug",
+        "/configure",
         "/login",
         "/$mail/"
       ]
@@ -152,6 +193,17 @@ export const routeTree = rootRoute.addChildren({
     },
     "/debug": {
       "filePath": "debug.lazy.tsx"
+    },
+    "/configure": {
+      "filePath": "configure",
+      "children": [
+        "/configure/_layout",
+        "/configure/instance/"
+      ]
+    },
+    "/configure/_layout": {
+      "filePath": "configure/_layout.tsx",
+      "parent": "/configure"
     },
     "/login": {
       "filePath": "login",
@@ -173,6 +225,10 @@ export const routeTree = rootRoute.addChildren({
     "/login/_layout/create": {
       "filePath": "login/_layout.create.lazy.tsx",
       "parent": "/login/_layout"
+    },
+    "/configure/instance/": {
+      "filePath": "configure/instance/index.tsx",
+      "parent": "/configure"
     },
     "/login/_layout/": {
       "filePath": "login/_layout.index.tsx",
