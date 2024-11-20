@@ -28,6 +28,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .at("/", get(hello))
         .at("/auth/challenge", get(routes::auth::challenge::get))
         .at("/auth/oauth", get(routes::auth::oauth::get))
+        .at("/health", get(routes::health::get))
         .with(Cors::new())
         .data(app_state);
 
