@@ -21,7 +21,6 @@ export default {
                 card: {
                     background: 'rgb(245,245,245)',
                 },
-                funky: 'linear-gradient(to right top, #af0917, #bc161b, #c9201f, #d72924, #e43228)',
             },
         },
     },

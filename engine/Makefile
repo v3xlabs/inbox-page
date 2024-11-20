@@ -30,9 +30,3 @@ dev-logs:
 .PHONY: dev-ps
 dev-ps:
 	docker compose -f compose.dev.yml ps
-init-keycloak:
-	@chmod +x ./scripts/init-keycloak.sh
-	@./scripts/init-keycloak.sh
-
-.PHONY: init-keycloak
-
