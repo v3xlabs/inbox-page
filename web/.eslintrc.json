@@ -13,7 +13,7 @@
         "v3xlabs"
     ],
     "env": {
-        "node": true
+        "browser": true
     },
     "rules": {}
 }
