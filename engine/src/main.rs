@@ -1,3 +1,4 @@
+use dotenvy::dotenv;
 use poem::{
     get, handler, listener::TcpListener, middleware::Cors, web::Path, EndpointExt,
     Route, Server,
@@ -16,7 +17,7 @@ fn hello(Path(name): Path<String>) -> String {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Load environment variables
-    dotenv::dotenv().ok();
+    dotenv().ok();
     
     let database_url = std::env::var("DATABASE_URL")
         .expect("DATABASE_URL must be set");
@@ -30,7 +31,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .at("/auth/challenge", get(routes::auth::challenge::get))
         .with(Cors::new());
 
-    Server::new(TcpListener::bind("0.0.0.0:3000"))
+    Ok(Server::new(TcpListener::bind("0.0.0.0:3000"))
         .run(app)
-        .await
+        .await?)
 }

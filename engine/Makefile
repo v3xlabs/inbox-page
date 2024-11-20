@@ -4,10 +4,11 @@ DATABASE_URL=postgres://postgres:postgres@localhost:5432/inbox_dev
 .PHONY: dev-up
 dev-up:
 	@mkdir -p scripts
-	@chmod +x scripts/init-db.sh
 	docker compose -f docker-compose.dev.yml up -d
-	@echo "Waiting for database to be ready..."
+	@echo "Waiting for database initialization..."
 	@sleep 5
+	@echo "Checking service status..."
+	@docker compose -f docker-compose.dev.yml ps
 	@echo "Development environment is ready!"
 	@echo "Database URL: ${DATABASE_URL}"
 
