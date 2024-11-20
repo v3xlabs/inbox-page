@@ -13,6 +13,13 @@ export default {
                 text: {
                     DEFAULT: '#2d3436',
                     inverse: 'white',
+                    secondary: '#636e72',
+                },
+                border: {
+                    DEFAULT: '#e0e0e0',
+                },
+                card: {
+                    background: 'rgb(245,245,245)',
                 },
             },
         },
