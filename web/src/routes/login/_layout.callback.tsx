@@ -1,13 +1,56 @@
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { useElapsedTime } from 'use-elapsed-time';
+
+import { useInstanceConfig } from '../../hooks/useInstanceConfig';
 
 export const Route = createFileRoute('/login/_layout/callback')({
     component: () => {
         // extract the session_state, code, state from the url
         const url = new URL(window.location.href);
         const session_state = url.searchParams.get('session_state');
+        const iss = url.searchParams.get('iss');
         const code = url.searchParams.get('code');
         const state = url.searchParams.get('state');
+
+        const { instance_url } = useInstanceConfig();
+        const { data: auth_token, error } = useQuery({
+            queryKey: ['auth_token'],
+            retry: false,
+            queryFn: async () => {
+                const response = await fetch(instance_url + '/auth/token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        code,
+                        state,
+                        session_state,
+                        iss,
+                    }),
+                });
+
+                return (await response.json()) as {
+                    access_token: string;
+                };
+            },
+        });
+        const { data: me } = useQuery({
+            queryKey: ['me'],
+            queryFn: async () => {
+                const response = await fetch(instance_url + '/auth/me', {
+                    headers: {
+                        Authorization: `Bearer ${auth_token?.access_token}`,
+                    },
+                });
+
+                return (await response.json()) as {
+                    user: {};
+                };
+            },
+            enabled: !!auth_token,
+        });
 
         const { elapsedTime } = useElapsedTime({
             isPlaying: true,
@@ -31,10 +74,43 @@ export const Route = createFileRoute('/login/_layout/callback')({
                         </p>
                         <pre className="bg-gray-100 p-4 rounded-md overflow-x-scroll">
                             <div>session_state: {session_state}</div>
+                            <div>iss: {iss}</div>
                             <div>code: {code}</div>
                             <div>state: {state}</div>
                         </pre>
+                        <hr />
+                        <p>
+                            If you are not redirected, please click{' '}
+                            <a href="/login" className="link">
+                                here
+                            </a>
+                        </p>
                     </>
+                )}
+                {error && (
+                    <div className="text-red-500 bg-red-100 p-4 rounded-md">
+                        <p>{error.message}</p>
+
+                        <a href="/login" className="button">
+                            Return to login
+                        </a>
+                    </div>
+                )}
+                {auth_token && (
+                    <div>
+                        <h2 className="h2">Auth Token</h2>
+                        <pre className="bg-gray-100 p-4 rounded-md overflow-x-scroll">
+                            {JSON.stringify(auth_token, undefined, 2)}
+                        </pre>
+                    </div>
+                )}
+                {me && (
+                    <div>
+                        <h2 className="h2">Me</h2>
+                        <pre className="bg-gray-100 p-4 rounded-md overflow-x-scroll">
+                            {JSON.stringify(me, undefined, 2)}
+                        </pre>
+                    </div>
                 )}
             </div>
         );
